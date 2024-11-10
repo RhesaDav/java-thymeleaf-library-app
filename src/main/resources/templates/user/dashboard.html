@@ -60,6 +60,38 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <tr th:each="loan : ${userActiveLoans}">
+                                    <td th:text="${loan.book.title}"></td>
+                                    <td th:text="${#temporals.format(loan.borrowDate, 'dd-MM-yyyy')}"></td>
+                                    <td th:text="${#temporals.format(loan.dueDate, 'dd-MM-yyyy')}"></td>
+                                    <td th:text="${loan.fine}"></td>
+                                    <td>
+                                        <span th:if="${loan.returnDate == null}" class="badge bg-warning">Active</span>
+                                        <span th:unless="${loan.returnDate == null}" class="badge bg-success">Returned</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Section to Display History Loans -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3>Your History Loans</h3>
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Book Title</th>
+                                    <th>Borrow Date</th>
+                                    <th>Due Date</th>
+                                    <th>Fine (Rp)</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
                                 <tr th:each="loan : ${userLoans}">
                                     <td th:text="${loan.book.title}"></td>
                                     <td th:text="${#temporals.format(loan.borrowDate, 'dd-MM-yyyy')}"></td>
@@ -79,6 +111,7 @@
 
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>

@@ -52,4 +52,21 @@ public class LoanService {
 		loan.getBook().setAvailable(true);
 		return loanRepository.save(loan);
 	}
+	
+	public int countActiveLoansByUser(User user) {
+		return loanRepository.countByUserAndReturnDateIsNull(user);
+	}
+	
+	public double calculateOutstandingFines(User user) {
+		List<Loan> loans = loanRepository.findByUserAndReturnDateIsNull(user);
+		return loans.stream().mapToDouble(loan -> loan.getFine()).sum();
+	}
+	
+	public List<Loan> findLoansByUser(User user) {
+		return loanRepository.findAllByUser(user);
+	}
+	
+	public List<Loan> findActiveLoansByUser(User user) {
+		return loanRepository.findByUserAndReturnDateIsNull(user);
+	}
 }

@@ -26,4 +26,8 @@ public class BookService {
 	public Book createBook(Book book) {
 		return bookRepository.save(book);
 	}
+	
+	public int countAvailableBooks() {
+		return bookRepository.countByAvailableTrue();
+	}
 }
