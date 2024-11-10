@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/main :: head"></head>
+<body>
+<div th:replace="layout/main :: navbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div th:replace="layout/main :: sidebar"></div>
+        </div>
+        <div class="col-md-10 main-content">
+            <h2>Active Loans</h2>
+            <div class="d-flex justify-content-end mb-3">
+                <a th:href="@{/admin/loans/borrow}" class="btn btn-primary">Borrow New Book</a>
+            </div>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Book</th>
+                            <th>Borrow Date</th>
+                            <th>Due Date</th>
+                            <th>Return Date</th>
+                            <th>Status</th>
+                            <th>Fine (Rp)</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="loan : ${loans}">
+                            <td th:text="${loan.id}"></td>
+                            <td th:text="${loan.user.username}"></td>
+                            <td th:text="${loan.book.title}"></td>
+                            <td th:text="${#temporals.format(loan.borrowDate, 'dd-MM-yyyy')}"></td>
+                            <td th:text="${#temporals.format(loan.dueDate, 'dd-MM-yyyy')}"></td>
+                            <td th:text="${#temporals.format(loan.returnDate, 'dd-MM-yyyy')}"></td>
+                            <td>
+                                <span th:if="${loan.returnDate == null}" class="badge bg-warning">Active</span>
+                                <span th:unless="${loan.returnDate == null}" class="badge bg-success">Returned</span>
+                            </td>
+                            <td th:text="${loan.fine}"></td>
+                            <td>
+                                <form th:if="${loan.returnDate == null}"
+                                      th:action="@{/admin/loans/{id}/return(id=${loan.id})}"
+                                      method="post">
+                                    <button type="submit" class="btn btn-sm btn-success">Return</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/main :: head"></head>
+<body>
+<div th:replace="layout/main :: navbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <div th:replace="layout/main :: sidebar"></div>
+        </div>
+        <div class="col-md-10 main-content">
+            <h2>User Dashboard</h2>
+            <div class="row mt-4">
+                <!-- Card for Books Borrowed by User -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Books Borrowed</h5>
+                            <h2 class="card-text" th:text="${borrowedBooks}">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card for Outstanding Fines -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Outstanding Fines</h5>
+                            <h2 class="card-text" th:text="${outstandingFines}">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card for Total Books Available -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Books Available</h5>
+                            <h2 class="card-text" th:text="${availableBooks}">0</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section to Display Active Loans -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3>Your Active Loans</h3>
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Book Title</th>
+                                    <th>Borrow Date</th>
+                                    <th>Due Date</th>
+                                    <th>Fine (Rp)</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="loan : ${userLoans}">
+                                    <td th:text="${loan.book.title}"></td>
+                                    <td th:text="${#temporals.format(loan.borrowDate, 'dd-MM-yyyy')}"></td>
+                                    <td th:text="${#temporals.format(loan.dueDate, 'dd-MM-yyyy')}"></td>
+                                    <td th:text="${loan.fine}"></td>
+                                    <td>
+                                        <span th:if="${loan.returnDate == null}" class="badge bg-warning">Active</span>
+                                        <span th:unless="${loan.returnDate == null}" class="badge bg-success">Returned</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
